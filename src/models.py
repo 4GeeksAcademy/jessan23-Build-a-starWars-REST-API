@@ -9,7 +9,7 @@ class User(db.Model):
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return '<User %r>' % self.user
 
     def serialize(self):
         return {
@@ -17,3 +17,110 @@ class User(db.Model):
             "email": self.email,
             # do not serialize the password, its a security breach
         }
+    
+class People(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    birth_year = db.Column(db.String(120), unique=False, nullable=False)
+    eye_color = db.Column(db.String(80), unique=False, nullable=False)
+    gender = db.Column(db.String(80), unique=False, nullable=False)
+    skin_color = db.Column(db.String(80), unique=False, nullable=False)
+        
+    def __repr__(self):
+        return '<People %r>' % self.people
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "birth_year": self.birth_year,
+            "eye_color" : self.eye_color,
+            "gender" : self.gender,
+            "skin_color" : self.skin_color_color,
+
+        }
+    
+class Planet(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120), unique=False, nullable=False)
+    created = db.Column(db.String(80), unique=False, nullable=False)
+    diameter = db.Column(db.String(80), unique=False, nullable=False)
+    climate = db.Column(db.String(80), unique=False, nullable=False)
+        
+    def __repr__(self):
+        return '<Planets %r>' % self.planets
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "name": self.birth_year,
+            "created" : self.eye_color,
+            "diameter" : self.gender,
+            "climate" : self.skin_color_color,
+
+        }
+    
+class Vehicle(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    cargo_capacity = db.Column(db.String(120), unique=False, nullable=False)
+    consumables = db.Column(db.String(80), unique=False, nullable=False)
+    created = db.Column(db.String(80), unique=False, nullable=False)
+    model = db.Column(db.String(80), unique=False, nullable=False)
+        
+    def __repr__(self):
+        return '<Vehicles %r>' % self.vehicles
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "cargo_capacity": self.cargo_capacity,
+            "consumables" : self.consumables,
+            "created" : self.created,
+            "model" : self.model,
+
+        }
+    
+class Vehicle(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    cargo_capacity = db.Column(db.String(120), unique=False, nullable=False)
+    consumables = db.Column(db.String(80), unique=False, nullable=False)
+    created = db.Column(db.String(80), unique=False, nullable=False)
+    model = db.Column(db.String(80), unique=False, nullable=False)
+        
+    def __repr__(self):
+        return '<Vehicles %r>' % self.vehicles
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "cargo_capacity": self.cargo_capacity,
+            "consumables" : self.consumables,
+            "created" : self.created,
+            "model" : self.model,
+
+        }
+
+
+class Favoritos(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"),nullable=False)
+    people_id = db.Column(db.Integer, db.ForeignKey("people.id"))
+    vehicle_id = db.Column(db.Integer, db.ForeignKey("vehicle.id"))
+
+
+        
+    def __repr__(self):
+        return '<Vehicles %r>' % self.vehicles
+        
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "people_id" : self.people_id,
+            "vehicle_id" : self.vehicle,
+
+        }
+    
+
+    
+
+    
