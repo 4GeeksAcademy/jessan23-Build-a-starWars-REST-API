@@ -1,7 +1,7 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
-import os
+import os, json
 from flask import Flask, request, jsonify, url_for
 from flask_migrate import Migrate
 from flask_swagger import swagger
@@ -37,13 +37,48 @@ def sitemap():
     return generate_sitemap(app)
 
 @app.route('/user', methods=['GET'])
-def handle_hello():
+def get_all_users():
+    try:
+        users = User.query.all()
+        if len (users)<1:
+            return jsonify({"msg": "not found"}), 404
+        serialized_users = list(map(lambda x: x.serialize(),users))
+        return serialized_users, 200
+    except Exception as e:
+        return jsonify ({"msg":"Server error", "error":str(e)}), 500
+        
+    
 
-    response_body = {
-        "msg": "Hello, this is your GET /user response "
-    }
+@app.route('/user/<int:user_id>', methods=['GET'])
+def get_one_user(user_id):
+    try:
+        user = User.query.get(user_id)
+        if user is None :
+            return jsonify({"msg": f"user{user_id}not found"}), 404
+        serialized_user = user.serialized()
+        return serialized_user, 200
+    except Exception as e:
+        return jsonify ({"msg":"Server error", "error":str(e)}), 500
+    
 
-    return jsonify(response_body), 200
+
+
+    #POST
+@app.route('/user',methods=['POST'])
+def create_one_user():
+    try:
+        body=json.loads(request.data)
+        new_user= User(
+            email= body["email"],
+            password= body["password"],
+            is_active=True
+        )
+        db.session.add(new_user)
+        db.session.commit()
+        return jsonify({"msg":"User created succesfull"}),201
+    except Exception as e:
+        return jsonify({"msg":"server error","error":str(e)}), 500
+        
 
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
