@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, User
+from models import db, User, People, Planet, Vehicle
 #from models import Person
 
 app = Flask(__name__)
@@ -36,6 +36,8 @@ def handle_invalid_usage(error):
 def sitemap():
     return generate_sitemap(app)
 
+#GET
+
 @app.route('/user', methods=['GET'])
 def get_all_users():
     try:
@@ -46,9 +48,7 @@ def get_all_users():
         return serialized_users, 200
     except Exception as e:
         return jsonify ({"msg":"Server error", "error":str(e)}), 500
-        
     
-
 @app.route('/user/<int:user_id>', methods=['GET'])
 def get_one_user(user_id):
     try:
@@ -59,6 +59,55 @@ def get_one_user(user_id):
         return serialized_user, 200
     except Exception as e:
         return jsonify ({"msg":"Server error", "error":str(e)}), 500
+    
+
+
+@app.route('/people', methods=['GET'])
+def get_all_peoples():
+    try:
+        peoples = People.query.all()
+        if len (peoples)<1:
+            return jsonify({"msg": "not found"}), 404
+        serialized_users = list(map(lambda x: x.serialize(),peoples))
+        return serialized_users, 200
+    except Exception as e:
+        return jsonify ({"msg":"Server error", "error":str(e)}), 500
+    
+@app.route('/user/<int:people_id>', methods=['GET'])
+def get_one_people(people_id):
+    try:
+        people = People.query.get(people_id)
+        if people is None :
+            return jsonify({"msg": f"people{people_id}not found"}), 404
+        serialized_user = people.serialized()
+        return serialized_user, 200
+    except Exception as e:
+        return jsonify ({"msg":"Server error", "error":str(e)}), 500
+
+
+@app.route('/planet', methods=['GET'])
+def get_all_planets():
+    try:
+        planets = Planet.query.all()
+        if len (planets)<1:
+            return jsonify({"msg":"not found"}),404
+        serialized_users = list(map(lambda x: x.serialize(),planets))
+        return serialized_users, 200
+    except Exception as e:
+        return jsonify ({"msg":"Server error", "error":str(e)}), 500
+    
+@app.route('/vehicle', methods=['GET'])
+def get_all_vehicles():
+    try:
+        vehicles = Vehicle.query.all()
+        if len (vehicles)<1:
+            return jsonify({"msg":"not found"}),404
+        serialized_users = list (map(lambda x: x.serialize(),vehicles))
+        return serialized_users, 200
+    except Exception as e:
+        return jsonify ({"msg":"server error", "error":str(e)}), 500
+    
+
     
 
 
