@@ -9,8 +9,9 @@ class User(db.Model):
     password = db.Column(db.String(200), unique=False, nullable=False)
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
 
+
     def __repr__(self):
-        return '<User %r>' % self.user
+        return '<User %r>' % self.id
 
     def serialize(self):
         return {
@@ -25,9 +26,9 @@ class People(db.Model):
     eye_color = db.Column(db.String(80), unique=False, nullable=False)
     gender = db.Column(db.String(80), unique=False, nullable=False)
     skin_color = db.Column(db.String(80), unique=False, nullable=False)
-        
+
     def __repr__(self):
-        return '<People %r>' % self.people
+        return '<People %r>' % self.id
 
     def serialize(self):
         return {
@@ -45,9 +46,9 @@ class Planet(db.Model):
     created = db.Column(db.String(80), unique=False, nullable=False)
     diameter = db.Column(db.String(80), unique=False, nullable=False)
     climate = db.Column(db.String(80), unique=False, nullable=False)
-        
+     
     def __repr__(self):
-        return '<Planet %r>' % self.planet
+        return '<Planet %r>' % self.id
 
     def serialize(self):
         return {
@@ -65,9 +66,9 @@ class Vehicle(db.Model):
     consumables = db.Column(db.String(80), unique=False, nullable=False)
     created = db.Column(db.String(80), unique=False, nullable=False)
     model = db.Column(db.String(80), unique=False, nullable=False)
-        
+    
     def __repr__(self):
-        return '<Vehicle %r>' % self.vehicle
+        return '<Vehicle %r>' % self.id
 
     def serialize(self):
         return {
@@ -84,17 +85,17 @@ class Vehicle(db.Model):
 class Favoritos(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"),nullable=False)
-    user = db.relationship(User)
+    user = db.relationship("User")
     people_id = db.Column(db.Integer, db.ForeignKey("people.id"))
-    people = db.relationship(People)
+    people = db.relationship("People")
     planet_id = db.Column (db.Integer, db.ForeignKey("planet.id"))
-    planet = db. relationship(Planet)
+    planet = db. relationship("Planet")
     vehicle_id = db.Column(db.Integer, db.ForeignKey("vehicle.id"))
-    vehicle = db.relationship(Vehicle)
+    vehicle = db.relationship("Vehicle")
 
         
     def __repr__(self):
-        return '<Favoritos %r>' % self.favoritos
+        return '<Favoritos %r>' % self.id
         
 
     def serialize(self):
