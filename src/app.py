@@ -55,8 +55,8 @@ def get_one_user(user_id):
         user = User.query.get(user_id)
         if user is None :
             return jsonify({"msg": f"user{user_id}not found"}), 404
-        serialized_user = user.serialized()
-        return serialized_user, 200
+        serialize_user = user.serialize()
+        return serialize_user, 200
     except Exception as e:
         return jsonify ({"msg":"Server error", "error":str(e)}), 500
     
@@ -73,13 +73,13 @@ def get_all_peoples():
     except Exception as e:
         return jsonify ({"msg":"Server error", "error":str(e)}), 500
     
-@app.route('/user/<int:people_id>', methods=['GET'])
+@app.route('/people/<int:people_id>', methods=['GET'])
 def get_one_people(people_id):
     try:
         people = People.query.get(people_id)
         if people is None :
             return jsonify({"msg": f"people{people_id}not found"}), 404
-        serialized_user = people.serialized()
+        serialized_user = people.serialize()
         return serialized_user, 200
     except Exception as e:
         return jsonify ({"msg":"Server error", "error":str(e)}), 500
@@ -96,6 +96,18 @@ def get_all_planets():
     except Exception as e:
         return jsonify ({"msg":"Server error", "error":str(e)}), 500
     
+@app.route('/planet/<int:planet_id>', methods=['GET'])
+def get_one_planet(planet_id):
+    try:
+        planet = Planet.query.get(planet_id)
+        if planet is None :
+            return jsonify({"msg": f"planet{planet_id}not found"}), 404
+        serialized_user = planet.serialize()
+        return serialized_user, 200
+    except Exception as e:
+        return jsonify ({"msg":"Server error", "error":str(e)}), 500
+
+    
 @app.route('/vehicle', methods=['GET'])
 def get_all_vehicles():
     try:
@@ -107,6 +119,16 @@ def get_all_vehicles():
     except Exception as e:
         return jsonify ({"msg":"server error", "error":str(e)}), 500
     
+@app.route('/vehicle/<int:vehicle_id>', methods=['GET'])
+def get_one_vehicle(vehicle_id):
+    try:
+        vehicle = Vehicle.query.get(vehicle_id)
+        if vehicle is None :
+            return jsonify({"msg": f"planet{vehicle_id}not found"}), 404
+        serialized_user = vehicle.serialize()
+        return serialized_user, 200
+    except Exception as e:
+        return jsonify ({"msg":"Server error", "error":str(e)}), 500
 
     
 
